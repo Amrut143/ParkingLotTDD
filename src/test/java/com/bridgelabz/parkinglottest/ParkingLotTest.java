@@ -81,4 +81,17 @@ public class ParkingLotTest {
             Assert.assertTrue(ParkingLotViewer.OWNER.isParkingFull);
         }
     }
+
+    @Test
+    public void givenParkingCapacityIsFull_WhenInformedToAirportSecurity_ShouldReturnTrue() {
+        try {
+            this.parkingLot.parkVehicle(vehicle);
+            Object vehicle2 = new Object();
+            parkingLot.parkVehicle(vehicle2);
+            Object vehicle3 = new Object();
+            parkingLot.parkVehicle(vehicle3);
+        } catch (ParkingLotException e) {
+            Assert.assertTrue(ParkingLotViewer.AIRPORT_SECURITY.isParkingFull);
+        }
+    }
 }
