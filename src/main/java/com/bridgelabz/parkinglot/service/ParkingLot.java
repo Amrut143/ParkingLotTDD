@@ -46,6 +46,7 @@ public class ParkingLot {
         if (this.vehicle.size() == this.parkingLotCapacity) {
             this.parkingCapacityFull = true;
             this.viewer.OWNER.isParkingFull = true;
+            this.viewer.AIRPORT_SECURITY.isParkingFull = true;
             throw new ParkingLotException("No space available in the parking lot!",
                     ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL);
         }
@@ -61,6 +62,7 @@ public class ParkingLot {
         if (this.isVehiclePresent(vehicle)) {
             this.vehicle.remove(vehicle);
             this.viewer.OWNER.isParkingFull = false;
+            this.viewer.AIRPORT_SECURITY.isParkingFull = true;
             return;
         }
         throw new ParkingLotException("No such car present in parking lot!",
