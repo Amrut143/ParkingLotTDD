@@ -62,7 +62,6 @@ public class ParkingLot {
         if (this.isVehiclePresent(vehicle)) {
             this.vehicle.remove(vehicle);
             this.viewer.OWNER.isParkingFull = false;
-            this.viewer.AIRPORT_SECURITY.isParkingFull = true;
             return;
         }
         throw new ParkingLotException("No such car present in parking lot!",
