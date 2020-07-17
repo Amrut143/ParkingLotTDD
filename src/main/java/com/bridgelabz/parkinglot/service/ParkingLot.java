@@ -1,20 +1,15 @@
-package com.bridgelabz.parkinglot;
+package com.bridgelabz.parkinglot.service;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.bridgelabz.parkinglot.exception.ParkingLotException;
 
 public class ParkingLot {
 
-    private List vehicle;
-    private int parkingCapacity;
-    private boolean parkingCapacityFull;
+    private Object vehicle;
+    private int parkingLotCapacity;
+    private int currentParkingLotSize;
 
-    public ParkingLot() {
-        this.vehicle = new ArrayList();
-    }
-
-    public void setParkingLotCapacity(int capacity) {
-        this.parkingCapacity = capacity;
+    public ParkingLot(int parkingLotCapacity) {
+        this.parkingLotCapacity = parkingLotCapacity;
     }
 
     /**
@@ -22,17 +17,13 @@ public class ParkingLot {
      * @param vehicle
      * @return
      */
-    public boolean parkVehicle(Object vehicle) {
-        if (this.vehicle.size() == this.parkingCapacity) {
-            this.parkingCapacityFull = true;
+    public boolean parkVehicle(Object vehicle) throws ParkingLotException {
+        if (this.currentParkingLotSize == this.parkingLotCapacity)
             throw new ParkingLotException("No space available in the parking lot!",
                     ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL);
-        }
-        if (this.vehicle.equals(vehicle)) {
-            throw new ParkingLotException("Car already present in parking lot!",
-                    ParkingLotException.ExceptionType.CAR_ALREADY_PARKED);
-        }
-        this.vehicle.add(vehicle);
+        this.vehicle = vehicle;
+        currentParkingLotSize++;
+        return true;
     }
 
     /**
@@ -40,10 +31,9 @@ public class ParkingLot {
      * @param vehicle
      * @return
      */
-    public boolean unParkVehicle(Object vehicle) {
+    public boolean unParkVehicle(Object vehicle) throws ParkingLotException {
         if (this.vehicle != null && this.vehicle.equals(vehicle)) {
-            this.parkedVehicles.remove(vehicle);
-            return;
+            return true;
         }
         throw new ParkingLotException("No such car present in parking lot!",
                 ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED);

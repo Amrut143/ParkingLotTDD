@@ -1,6 +1,18 @@
 package com.bridgelabz.parkinglot.exception;
 
-public class ParkingLotException extends Throwable {
-    public ParkingLotException(String s, Object p1) {
+public class ParkingLotException extends Exception {
+    public enum ExceptionType {
+        NO_SUCH_CAR_PARKED, PARKING_CAPACITY_FULL
+    }
+    public ExceptionType type;
+
+    /**
+     *
+     * @param message
+     * @param type
+     */
+    public ParkingLotException(String message, ExceptionType type) {
+        super(message);
+        this.type = type;
     }
 }
