@@ -1,4 +1,10 @@
 package com.bridgelabz.parkinglot.enums;
 
-public class ParkingLotViewer {
+public enum ParkingLotViewer {
+    OWNER(false);
+    public boolean isParkingFull;
+
+    ParkingLotViewer(boolean isParkingFull) {
+        this.isParkingFull = isParkingFull;
+    }
 }
