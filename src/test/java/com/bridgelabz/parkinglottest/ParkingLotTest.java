@@ -37,7 +37,7 @@ public class ParkingLotTest {
             parkingLot.parkVehicle(vehicle);
             parkingLot.unParkVehicle(vehicle);
             boolean isVehicleParked = parkingLot.isVehiclePresent(vehicle);
-            Assert.assertTrue(isVehicleParked);
+            Assert.assertFalse(isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -92,6 +92,18 @@ public class ParkingLotTest {
             parkingLot.parkVehicle(vehicle3);
         } catch (ParkingLotException e) {
             Assert.assertTrue(ParkingLotViewer.AIRPORT_SECURITY.isParkingFull);
+        }
+    }
+
+    @Test
+    public void givenParkingCapacityNotFull_WhenInformedToOwner_ShouldReturnTrue() {
+        try {
+            this.parkingLot.parkVehicle(vehicle);
+            Object vehicle2 = new Object();
+            parkingLot.parkVehicle(vehicle2);
+            parkingLot.unParkVehicle(vehicle2);
+        } catch (ParkingLotException e) {
+            Assert.assertTrue(ParkingLotViewer.OWNER.isParkingAvailable);
         }
     }
 }
