@@ -20,7 +20,7 @@ public class ParkingLot {
      * @return
      */
     public boolean unParkVehicle(Object vehicle) {
-        if (this.vehicle.equals(vehicle)) {
+        if (this.vehicle != null && this.vehicle.equals(vehicle)) {
             return true;
         }
         return false;
