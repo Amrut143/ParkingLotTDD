@@ -56,6 +56,17 @@ public class ParkingLotTest {
     }
 
     @Test
+    public void givenAVehicle_IfTriedToRePark_ShouldThrowAnException() {
+        try {
+            parkingLot.parkVehicle(vehicle);
+            parkingLot.parkVehicle(vehicle);
+        } catch (ParkingLotException e) {
+            Assert.assertEquals(ParkingLotException.ExceptionType.CAR_ALREADY_PARKED, e.type);
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void givenAParkingLotWithSize_WhenCapacityIsFull_ShouldThrowAnException() {
         try {
             this.parkingLot.parkVehicle(vehicle);

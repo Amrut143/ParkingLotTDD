@@ -50,6 +50,10 @@ public class ParkingLot {
             throw new ParkingLotException("No space available in the parking lot!",
                     ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL);
         }
+        if (this.isVehiclePresent(vehicle)) {
+            throw new ParkingLotException("Car already present in parking lot!",
+                    ParkingLotException.ExceptionType.CAR_ALREADY_PARKED);
+        }
         this.vehicle.add(vehicle);
     }
 
