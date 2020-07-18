@@ -31,10 +31,7 @@ public class ParkingLot {
      * @return
      */
     public boolean isVehiclePresent(Object vehicle) {
-        if (this.vehicle.contains(vehicle)) {
-            return true;
-        }
-        return false;
+        return this.vehicle.contains(vehicle);
     }
 
     /**
