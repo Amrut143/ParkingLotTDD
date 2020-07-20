@@ -1,6 +1,6 @@
 package com.bridgelabz.parkinglottest;
 
-import com.bridgelabz.parkinglot.enums.ParkingLotViewer;
+import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
 import org.junit.Assert;
@@ -89,7 +89,7 @@ public class ParkingLotTest {
             Object vehicle3 = new Object();
             parkingLot.parkVehicle(vehicle3);
         } catch (ParkingLotException e) {
-            Assert.assertTrue(ParkingLotViewer.OWNER.isParkingFull);
+            Assert.assertTrue(ParkingLotObserver.OWNER.isParkingFull);
         }
     }
 
@@ -102,7 +102,7 @@ public class ParkingLotTest {
             Object vehicle3 = new Object();
             parkingLot.parkVehicle(vehicle3);
         } catch (ParkingLotException e) {
-            Assert.assertTrue(ParkingLotViewer.AIRPORT_SECURITY.isParkingFull);
+            Assert.assertTrue(ParkingLotObserver.AIRPORT_SECURITY.isParkingFull);
         }
     }
 
@@ -114,7 +114,7 @@ public class ParkingLotTest {
             parkingLot.parkVehicle(vehicle2);
             parkingLot.unParkVehicle(vehicle2);
         } catch (ParkingLotException e) {
-            Assert.assertTrue(ParkingLotViewer.OWNER.isParkingAvailable);
+            Assert.assertTrue(ParkingLotObserver.OWNER.isParkingFull);
         }
     }
 }

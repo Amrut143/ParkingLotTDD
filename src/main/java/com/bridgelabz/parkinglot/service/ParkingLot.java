@@ -1,7 +1,8 @@
 package com.bridgelabz.parkinglot.service;
 
-import com.bridgelabz.parkinglot.enums.ParkingLotViewer;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
+import com.bridgelabz.parkinglot.observer.ObserversInformer;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -9,12 +10,12 @@ public class ParkingLot {
 
     private List vehicle;
     private int parkingLotCapacity;
-    private ParkingLotViewer viewer;
+    private final ObserversInformer observersInformer;
     private boolean parkingCapacityFull;
 
     public ParkingLot() {
-        this.viewer = viewer;
         this.vehicle = new ArrayList();
+        this.observersInformer = new ObserversInformer();
     }
 
     /**
@@ -42,8 +43,7 @@ public class ParkingLot {
     public void parkVehicle(Object vehicle) throws ParkingLotException {
         if (this.vehicle.size() == this.parkingLotCapacity) {
             this.parkingCapacityFull = true;
-            this.viewer.OWNER.isParkingFull = true;
-            this.viewer.AIRPORT_SECURITY.isParkingFull = true;
+            this.observersInformer.informParkingIsFull();
             throw new ParkingLotException("No space available in the parking lot!",
                     ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL);
         }
@@ -60,12 +60,12 @@ public class ParkingLot {
      * @return
      */
     public void unParkVehicle(Object vehicle) throws ParkingLotException {
-        if (this.isVehiclePresent(vehicle)) {
-            this.vehicle.remove(vehicle);
-            this.viewer.OWNER.isParkingFull = false;
-            return;
+        if (!this.isVehiclePresent(vehicle)) {
+            throw new ParkingLotException("No such car present in parking lot!",
+                    ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED);
         }
-        throw new ParkingLotException("No such car present in parking lot!",
-                ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED);
+        this.vehicle.remove(vehicle);
+        this.observersInformer.informParkingIsAvailable();
+        return;
     }
 }
