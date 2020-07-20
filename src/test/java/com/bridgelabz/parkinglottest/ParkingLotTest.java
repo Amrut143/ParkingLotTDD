@@ -130,4 +130,13 @@ public class ParkingLotTest {
         parkingLot.slotAllotment.parkUpdate(1);
         Assert.assertEquals(1, parkingLot.slotAllotment.availableParkingSlots.size());
     }
+
+    @Test
+    public void givenAnEmptyParkingLot_WhenAskedForNearestParkingSlot_ShouldReturnFirstSlot() {
+        try {
+            Assert.assertEquals(1, parkingLot.slotAllotment.getNearestParkingSlot());
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }
