@@ -70,4 +70,15 @@ public class ParkingLot {
     public List getAvailableSlots() {
         return this.slotAllotment.availableParkingSlots;
     }
+
+    public void parkAtFollowingSlot(int slotNumber, Object vehicle) throws ParkingLotException {
+        int isCarPresent = this.isVehiclePresent(vehicle);
+        if (isCarPresent != -1) {
+            throw new ParkingLotException("No such car present in parking lot!",
+                    ParkingLotException.ExceptionType.CAR_ALREADY_PARKED);
+        }
+        this.parkedVehicles[slotNumber] = vehicle;
+        this.slotAllotment.unParkUpdate(slotNumber + 1);
+        return;
+    }
 }

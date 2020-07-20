@@ -139,4 +139,15 @@ public class ParkingLotTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenARequestFromOwnerToParkAtGivenSlot_SystemShouldAllotParkingSlotAccordingly() {
+        try {
+            parkingLot.parkAtFollowingSlot(1, vehicle);
+            int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
+            Assert.assertEquals(1, vehicleSlot);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }
