@@ -150,4 +150,15 @@ public class ParkingLotTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenARequestToFindAVehicleWhichIsParked_WhenFound_ShouldReturnSlotNumber() {
+        try {
+            parkingLot.parkVehicle(vehicle);
+            int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
+            Assert.assertEquals(0, vehicleSlot);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }
