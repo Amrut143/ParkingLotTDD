@@ -124,4 +124,10 @@ public class ParkingLotTest {
         List availableSlots = this.parkingLot.getAvailableSlots();
         Assert.assertEquals(this.parkingLot.slotAllotment.availableParkingSlots.size(), availableSlots.size());
     }
+
+    @Test
+    public void givenAVehicleToPark_InAnEmptyOccupiedList_ShouldReturnSize1() {
+        parkingLot.slotAllotment.parkUpdate(1);
+        Assert.assertEquals(1, parkingLot.slotAllotment.availableParkingSlots.size());
+    }
 }
