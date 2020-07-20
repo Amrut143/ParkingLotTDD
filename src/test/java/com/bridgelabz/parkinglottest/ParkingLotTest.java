@@ -161,4 +161,10 @@ public class ParkingLotTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenARequestToFindAVehicleWhichIsNotParked_WhenNotFound_ShouldReturnNegative1() {
+        int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
+        Assert.assertEquals(-1, vehicleSlot);
+    }
 }
