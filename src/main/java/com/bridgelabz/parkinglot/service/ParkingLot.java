@@ -1,29 +1,20 @@
 package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
-import com.bridgelabz.parkinglot.observer.ObserversInformer;
+import com.bridgelabz.parkinglot.utility.SlotAllotment;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public class ParkingLot {
 
-    private List vehicle;
-    private int parkingLotCapacity;
-    private final ObserversInformer observersInformer;
+    public final SlotAllotment slotAllotment;
+    private Object[] parkedVehicles;
     private boolean parkingCapacityFull;
 
-    public ParkingLot() {
-        this.vehicle = new ArrayList();
-        this.observersInformer = new ObserversInformer();
-    }
-
-    /**
-     *
-     * @param parkingLotCapacity
-     */
-    public void setParkingLotCapacity(int parkingLotCapacity) {
-        this.parkingLotCapacity = parkingLotCapacity;
+    public ParkingLot(int parkingLotCapacity) {
+        this.parkedVehicles = new Object[parkingLotCapacity];
+        this.slotAllotment = new SlotAllotment(parkingLotCapacity);
     }
 
     /**
@@ -31,41 +22,52 @@ public class ParkingLot {
      * @param vehicle
      * @return
      */
-    public boolean isVehiclePresent(Object vehicle) {
-        return this.vehicle.contains(vehicle);
+    public int isVehiclePresent(Object vehicle) {
+        return IntStream.range(0, this.parkedVehicles.length)
+                .filter(i -> vehicle.equals(this.parkedVehicles[i]))
+                .findFirst()
+                .orElse(-1);
     }
 
     /**
-     *
      * @param vehicle
      * @return
      */
     public void parkVehicle(Object vehicle) throws ParkingLotException {
-        if (this.vehicle.size() == this.parkingLotCapacity) {
-            this.parkingCapacityFull = true;
-            this.observersInformer.informParkingIsFull();
-            throw new ParkingLotException("No space available in the parking lot!",
-                    ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL);
-        }
-        if (this.isVehiclePresent(vehicle)) {
+        if (this.isVehiclePresent(vehicle) != -1) {
             throw new ParkingLotException("Car already present in parking lot!",
                     ParkingLotException.ExceptionType.CAR_ALREADY_PARKED);
         }
-        this.vehicle.add(vehicle);
+        int slot = this.getSlot();
+        this.parkedVehicles[slot] = vehicle;
+        this.slotAllotment.parkUpdate(slot + 1);
+    }
+
+    private int getSlot() throws ParkingLotException {
+        try {
+            return slotAllotment.getNearestParkingSlot() - 1;
+        } catch (ParkingLotException e) {
+            this.parkingCapacityFull = true;
+            throw e;
+        }
     }
 
     /**
-     *
      * @param vehicle
      * @return
      */
     public void unParkVehicle(Object vehicle) throws ParkingLotException {
-        if (!this.isVehiclePresent(vehicle)) {
+        Integer isVehiclePresent = this.isVehiclePresent(vehicle);
+        if (isVehiclePresent == -1) {
             throw new ParkingLotException("No such car present in parking lot!",
                     ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED);
         }
-        this.vehicle.remove(vehicle);
-        this.observersInformer.informParkingIsAvailable();
+        this.parkedVehicles[isVehiclePresent] = null;
+        this.slotAllotment.unParkUpdate(isVehiclePresent + 1);
         return;
+    }
+
+    public List getAvailableSlots() {
+        return this.slotAllotment.availableParkingSlots;
     }
 }

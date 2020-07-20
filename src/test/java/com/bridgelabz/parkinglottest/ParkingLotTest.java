@@ -3,9 +3,12 @@ package com.bridgelabz.parkinglottest;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
+import com.bridgelabz.parkinglot.utility.SlotAllotment;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.List;
 
 public class ParkingLotTest {
 
@@ -14,21 +17,19 @@ public class ParkingLotTest {
 
     @Before
     public void setUp() {
-        parkingLot = new ParkingLot();
+        parkingLot = new ParkingLot(2);
         vehicle = new Object();
-        this.parkingLot.setParkingLotCapacity(2);
     }
 
     @Test
     public void givenAVehicle_WhenParkedInParkingLot_ShouldReturnTrue() {
         try {
             parkingLot.parkVehicle(vehicle);
-            boolean isVehicleParked = parkingLot.isVehiclePresent(vehicle);
-            Assert.assertTrue(isVehicleParked);
+            int isVehicleParked = parkingLot.isVehiclePresent(vehicle);
+            Assert.assertEquals(0, isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
-
     }
 
     @Test
@@ -36,8 +37,8 @@ public class ParkingLotTest {
         try {
             parkingLot.parkVehicle(vehicle);
             parkingLot.unParkVehicle(vehicle);
-            boolean isVehicleParked = parkingLot.isVehiclePresent(vehicle);
-            Assert.assertFalse(isVehicleParked);
+            int isVehicleParked = parkingLot.isVehiclePresent(vehicle);
+            Assert.assertEquals(-1, isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -116,5 +117,11 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
             Assert.assertTrue(ParkingLotObserver.OWNER.isParkingFull);
         }
+    }
+
+    @Test
+    public void givenARequestToViewAllAvailableSlots_WhenFound_ShouldReturnAllAvailableSlots() {
+        List availableSlots = this.parkingLot.getAvailableSlots();
+        Assert.assertEquals(this.parkingLot.slotAllotment.availableParkingSlots.size(), availableSlots.size());
     }
 }
