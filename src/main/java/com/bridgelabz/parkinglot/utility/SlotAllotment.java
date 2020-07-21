@@ -10,8 +10,8 @@ import java.util.stream.IntStream;
 
 public class SlotAllotment {
 
-    public int parkingLotCapacity;
-    public List<Integer> availableParkingSlots;
+    private int parkingLotCapacity;
+    private List<Integer> availableParkingSlots;
     private final ObserversInformer observersInformer;
 
     public SlotAllotment(int parkingLotCapacity) {
@@ -43,5 +43,9 @@ public class SlotAllotment {
             throw new ParkingLotException("No parking space available!!",
                     ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL);
         }
+    }
+
+    public List getAvailableSlotsList() {
+        return this.availableParkingSlots;
     }
 }

@@ -3,12 +3,17 @@ package com.bridgelabz.parkinglottest;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
-import com.bridgelabz.parkinglot.utility.SlotAllotment;
+import com.bridgelabz.parkinglot.utility.ParkingTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ParkingLotTest {
 
@@ -19,13 +24,14 @@ public class ParkingLotTest {
     public void setUp() {
         parkingLot = new ParkingLot(2);
         vehicle = new Object();
+        parkingLot.setParkingTime(new ParkingTime());
     }
 
     @Test
     public void givenAVehicle_WhenParkedInParkingLot_ShouldReturnTrue() {
         try {
             parkingLot.parkVehicle(vehicle);
-            int isVehicleParked = parkingLot.isVehiclePresent(vehicle);
+            int isVehicleParked = parkingLot.isVehiclePresent(vehicle)+1;
             Assert.assertEquals(0, isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -121,14 +127,14 @@ public class ParkingLotTest {
 
     @Test
     public void givenARequestToViewAllAvailableSlots_WhenFound_ShouldReturnAllAvailableSlots() {
-        List availableSlots = this.parkingLot.getAvailableSlots();
-        Assert.assertEquals(this.parkingLot.slotAllotment.availableParkingSlots.size(), availableSlots.size());
+        int availableSlots = this.parkingLot.getAvailableSlots().size();
+        Assert.assertEquals(2, availableSlots);
     }
 
     @Test
     public void givenAVehicleToPark_InAnEmptyOccupiedList_ShouldReturnSize1() {
         parkingLot.slotAllotment.parkUpdate(1);
-        Assert.assertEquals(1, parkingLot.slotAllotment.availableParkingSlots.size());
+        Assert.assertEquals(1, parkingLot.getAvailableSlots().size());
     }
 
     @Test
@@ -143,8 +149,8 @@ public class ParkingLotTest {
     @Test
     public void givenARequestFromOwnerToParkAtGivenSlot_SystemShouldAllotParkingSlotAccordingly() {
         try {
-            parkingLot.parkAtFollowingSlot(1, vehicle);
-            int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
+            parkingLot.parkVehicleAtSpecifiedSlot(1, vehicle);
+            int vehicleSlot = parkingLot.isVehiclePresent(vehicle)+2;
             Assert.assertEquals(1, vehicleSlot);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -155,7 +161,7 @@ public class ParkingLotTest {
     public void givenARequestToFindAVehicleWhichIsParked_WhenFound_ShouldReturnSlotNumber() {
         try {
             parkingLot.parkVehicle(vehicle);
-            int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
+            int vehicleSlot = parkingLot.isVehiclePresent(vehicle)+1;
             Assert.assertEquals(0, vehicleSlot);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -166,5 +172,19 @@ public class ParkingLotTest {
     public void givenARequestToFindAVehicleWhichIsNotParked_WhenNotFound_ShouldReturnNegative1() {
         int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
         Assert.assertEquals(-1, vehicleSlot);
+    }
+
+    @Test
+    public void givenAVehicle_WhenParked_ShouldReturnParkingStartTime() {
+        ParkingTime timeManager = new ParkingTime();
+        parkingLot.setParkingTime(timeManager);
+        LocalDateTime currTime = timeManager.getCurrentTime();
+        try {
+            parkingLot.parkVehicle(vehicle);
+            int tempSlot = parkingLot.isVehiclePresent(vehicle);
+            Assert.assertEquals(currTime, parkingLot.getVehicleTimingDetails(tempSlot));
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
     }
 }
