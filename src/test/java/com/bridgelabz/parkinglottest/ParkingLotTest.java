@@ -3,28 +3,37 @@ package com.bridgelabz.parkinglottest;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
+import com.bridgelabz.parkinglot.service.ParkingLotSystem;
 import com.bridgelabz.parkinglot.utility.ParkingTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ParkingLotTest {
 
     ParkingLot parkingLot;
     Object vehicle;
+    private ParkingLot firstLot;
+    private ParkingLot secondLot;
+    private ParkingLotSystem parkingSystem;
+    private Object firstVehicle;
+    private Object secondVehicle;
+    ParkingTime timeManager;
+
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLot(2);
         vehicle = new Object();
+        timeManager = new ParkingTime();
         parkingLot.setParkingTime(new ParkingTime());
+        this.firstLot = new ParkingLot(2, timeManager);
+        this.secondLot = new ParkingLot(2, timeManager);
+        this.firstVehicle = new Object();
+        this.secondVehicle = new Object();
+        this.parkingSystem = new ParkingLotSystem(firstLot, secondLot);
     }
 
     @Test
@@ -185,6 +194,49 @@ public class ParkingLotTest {
             Assert.assertEquals(currTime, parkingLot.getVehicleTimingDetails(tempSlot));
         } catch (ParkingLotException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenAParkingLot_ShouldGetAddedToTheParkingLotsManagedByTheSystem() {
+        ParkingLot parkingLot3 = new ParkingLot(5);
+        parkingSystem.addParking(parkingLot3);
+        int numberOfParkingLots = parkingSystem.getNumberOfParkingLots();
+        Assert.assertEquals(3, numberOfParkingLots);
+    }
+
+    @Test
+    public void givenParkingLotsAreEmpty_FirstVehicleShouldGetParkedInFirstParkingLot() {
+        try {
+            parkingSystem.park(firstVehicle);
+            ParkingLot lot = parkingSystem.getParkingLotInWhichThisVehicleIsParked(firstVehicle);
+            Assert.assertEquals(firstLot, lot);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenParkingLotsAreEmpty_SecondVehicleShouldGetParkedInSecondParkingLot() {
+        try {
+            parkingSystem.park(firstVehicle);
+            parkingSystem.park(secondVehicle);
+            ParkingLot lot = parkingSystem.getParkingLotInWhichThisVehicleIsParked(secondVehicle);
+            Assert.assertEquals(secondLot, lot);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenARequestToUnParkAVehicle_ShouldGetUnParked() {
+        try {
+            parkingSystem.park(firstVehicle);
+            parkingSystem.unPark(firstVehicle);
+            ParkingLot lot = parkingSystem.getParkingLotInWhichThisVehicleIsParked(firstVehicle);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+            Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED, e.type);
         }
     }
 }
