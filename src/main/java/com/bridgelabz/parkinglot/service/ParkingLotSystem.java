@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglot.service;
 
+import com.bridgelabz.parkinglot.enums.DriverType;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 
 import java.util.*;
@@ -21,6 +22,11 @@ public class ParkingLotSystem {
         List<ParkingLot> tempListOfLots = new ArrayList(this.numOfLots);
         Collections.sort(tempListOfLots, Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehiclesParked()));
         tempListOfLots.get(0).parkVehicle(vehicle);
+    }
+
+    public void park(Object vehicle, DriverType type) throws ParkingLotException {
+        ParkingLot parkingLot = type.getLot(this.numOfLots);
+        parkingLot.parkVehicle(vehicle);
     }
 
     public void unPark(Object vehicle) throws ParkingLotException {

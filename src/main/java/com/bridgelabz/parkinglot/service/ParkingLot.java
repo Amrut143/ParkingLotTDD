@@ -15,6 +15,7 @@ public class ParkingLot {
     public SlotAllotment slotAllotment;
     private ParkingTime parkingTime;
     private ArrayList<Slot> parkingSlots;
+    private int parkingLotCapacity;
     private boolean parkingCapacityFull;
     private int numberOfVehicles = 0;
 
@@ -25,16 +26,17 @@ public class ParkingLot {
     }
 
 
-    public ParkingLot(int parkingCapacity, ParkingTime timeManager) {
-        this.parkingSlots = new ArrayList(parkingCapacity);
-        this.slotAllotment = new SlotAllotment(parkingCapacity);
-        this.setInitialValuesToSlots(parkingCapacity);
+    public ParkingLot(int parkingLotCapacity, ParkingTime timeManager) {
+        this.parkingSlots = new ArrayList(parkingLotCapacity);
+        this.slotAllotment = new SlotAllotment(parkingLotCapacity);
+        this.setInitialValuesToSlots(parkingLotCapacity);
+        this.parkingLotCapacity = parkingLotCapacity;
         this.parkingTime = timeManager;
     }
 
     private void setInitialValuesToSlots(int parkingLotCapacity) {
         IntStream.range(0, parkingLotCapacity)
-                .forEach(i->this.parkingSlots.add(i, null));
+                .forEach(i -> this.parkingSlots.add(i, null));
     }
 
     public void setParkingTime(ParkingTime parkingTime) {
@@ -45,9 +47,14 @@ public class ParkingLot {
         return this.slotAllotment.getAvailableSlotsList();
     }
 
+    public int getParkingCapacity() {
+        return parkingLotCapacity;
+    }
+
     public LocalDateTime getVehicleTimingDetails(Object vehicle) {
         Slot tempSlot = new Slot(vehicle);
-        return this.parkingSlots.get(this.parkingSlots.indexOf(tempSlot)).getParkingStartTime();
+        Slot time = this.parkingSlots.get(this.parkingSlots.indexOf(tempSlot));
+        return time.getParkingStartTime();
     }
 
     public void parkVehicle(Object vehicle) throws ParkingLotException {

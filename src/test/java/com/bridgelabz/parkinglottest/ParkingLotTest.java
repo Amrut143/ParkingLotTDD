@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglottest;
 
+import com.bridgelabz.parkinglot.enums.DriverType;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
@@ -28,7 +29,7 @@ public class ParkingLotTest {
         parkingLot = new ParkingLot(2);
         vehicle = new Object();
         timeManager = new ParkingTime();
-        parkingLot.setParkingTime(new ParkingTime());
+        parkingLot.setParkingTime(timeManager);
         this.firstLot = new ParkingLot(2, timeManager);
         this.secondLot = new ParkingLot(2, timeManager);
         this.firstVehicle = new Object();
@@ -191,7 +192,8 @@ public class ParkingLotTest {
         try {
             parkingLot.parkVehicle(vehicle);
             int tempSlot = parkingLot.isVehiclePresent(vehicle);
-            Assert.assertEquals(currTime, parkingLot.getVehicleTimingDetails(tempSlot));
+            LocalDateTime details =  parkingLot.getVehicleTimingDetails(tempSlot);
+            Assert.assertEquals(currTime, details);
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -237,6 +239,18 @@ public class ParkingLotTest {
         } catch (ParkingLotException e) {
             e.printStackTrace();
             Assert.assertEquals(ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED, e.type);
+        }
+    }
+
+    @Test
+    public void givenAVehicleWithHandicappedDriver_IfFirstLotHasEmptySlots_TheVehicleShouldGetParkedInTheFirstParkingLot() {
+        try {
+            parkingSystem.park(firstVehicle);
+            parkingSystem.park(secondVehicle, DriverType.HANDICAPPED);
+            ParkingLot presentLot = parkingSystem.getParkingLotInWhichThisVehicleIsParked(secondVehicle);
+            Assert.assertEquals(firstLot, presentLot);
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
         }
     }
 }
