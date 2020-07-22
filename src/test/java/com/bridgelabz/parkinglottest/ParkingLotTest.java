@@ -11,6 +11,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ParkingLotTest {
 
@@ -21,17 +26,17 @@ public class ParkingLotTest {
     private ParkingLotSystem parkingSystem;
     private Object firstVehicle;
     private Object secondVehicle;
-    ParkingTime timeManager;
+    ParkingTime parkingTime;
 
 
     @Before
     public void setUp() {
         parkingLot = new ParkingLot(2);
         vehicle = new Object();
-        timeManager = new ParkingTime();
-        parkingLot.setParkingTime(timeManager);
-        this.firstLot = new ParkingLot(2, timeManager);
-        this.secondLot = new ParkingLot(2, timeManager);
+        parkingTime = new ParkingTime();
+       // parkingLot.setParkingTime(parkingTime);
+        this.firstLot = new ParkingLot(2);
+        this.secondLot = new ParkingLot(2);
         this.firstVehicle = new Object();
         this.secondVehicle = new Object();
         this.parkingSystem = new ParkingLotSystem(firstLot, secondLot);
@@ -41,7 +46,7 @@ public class ParkingLotTest {
     public void givenAVehicle_WhenParkedInParkingLot_ShouldReturnTrue() {
         try {
             parkingLot.parkVehicle(vehicle);
-            int isVehicleParked = parkingLot.isVehiclePresent(vehicle)+1;
+            int isVehicleParked = parkingLot.findSlotOfThisVehicle(vehicle)+1;
             Assert.assertEquals(0, isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -53,7 +58,7 @@ public class ParkingLotTest {
         try {
             parkingLot.parkVehicle(vehicle);
             parkingLot.unParkVehicle(vehicle);
-            int isVehicleParked = parkingLot.isVehiclePresent(vehicle);
+            int isVehicleParked = parkingLot.findSlotOfThisVehicle(vehicle);
             Assert.assertEquals(-1, isVehicleParked);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -160,7 +165,7 @@ public class ParkingLotTest {
     public void givenARequestFromOwnerToParkAtGivenSlot_SystemShouldAllotParkingSlotAccordingly() {
         try {
             parkingLot.parkVehicleAtSpecifiedSlot(1, vehicle);
-            int vehicleSlot = parkingLot.isVehiclePresent(vehicle)+2;
+            int vehicleSlot = parkingLot.findSlotOfThisVehicle(vehicle)+2;
             Assert.assertEquals(1, vehicleSlot);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -171,7 +176,7 @@ public class ParkingLotTest {
     public void givenARequestToFindAVehicleWhichIsParked_WhenFound_ShouldReturnSlotNumber() {
         try {
             parkingLot.parkVehicle(vehicle);
-            int vehicleSlot = parkingLot.isVehiclePresent(vehicle)+1;
+            int vehicleSlot = parkingLot.findSlotOfThisVehicle(vehicle)+1;
             Assert.assertEquals(0, vehicleSlot);
         } catch (ParkingLotException e) {
             e.printStackTrace();
@@ -180,19 +185,19 @@ public class ParkingLotTest {
 
     @Test
     public void givenARequestToFindAVehicleWhichIsNotParked_WhenNotFound_ShouldReturnNegative1() {
-        int vehicleSlot = parkingLot.isVehiclePresent(vehicle);
+        int vehicleSlot = parkingLot.findSlotOfThisVehicle(vehicle);
         Assert.assertEquals(-1, vehicleSlot);
     }
 
     @Test
     public void givenAVehicle_WhenParked_ShouldReturnParkingStartTime() {
-        ParkingTime timeManager = new ParkingTime();
-        parkingLot.setParkingTime(timeManager);
-        LocalDateTime currTime = timeManager.getCurrentTime();
+        LocalDateTime currTime = parkingTime.getCurrentTime();
+        ParkingLot parkingLot = mock(ParkingLot.class);
         try {
+            when(parkingLot.getVehicleTimingDetails(vehicle)).thenReturn(currTime);
             parkingLot.parkVehicle(vehicle);
-            int tempSlot = parkingLot.isVehiclePresent(vehicle);
-            LocalDateTime details =  parkingLot.getVehicleTimingDetails(tempSlot);
+            int slot = parkingLot.findSlotOfThisVehicle(vehicle);
+            LocalDateTime details =  parkingLot.getVehicleTimingDetails(vehicle);
             Assert.assertEquals(currTime, details);
         } catch (ParkingLotException e) {
             e.printStackTrace();
