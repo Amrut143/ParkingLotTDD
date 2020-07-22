@@ -14,7 +14,7 @@ public class ParkingLot {
 
     public SlotAllotment slotAllotment;
     private ParkingTime parkingTime;
-    private ArrayList<Slot> parkingSlots;
+    private List<Slot> parkingSlots;
     private int parkingLotCapacity;
     private boolean parkingCapacityFull;
     private int numberOfVehicles = 0;
