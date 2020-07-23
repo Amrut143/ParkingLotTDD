@@ -19,9 +19,9 @@ public class ParkingLotSystem {
     }
 
     public void park(Object vehicle) throws ParkingLotException {
-        List<ParkingLot> tempListOfLots = new ArrayList(this.numOfLots);
-        Collections.sort(tempListOfLots, Comparator.comparing(parkingLot -> parkingLot.getNumberOfVehiclesParked()));
-        tempListOfLots.get(0).parkVehicle(vehicle);
+        List<ParkingLot> listOfLots = new ArrayList(this.numOfLots);
+        listOfLots.sort(Comparator.comparing(ParkingLot::getNumberOfVehiclesParked));
+        listOfLots.get(0).parkVehicle(vehicle);
     }
 
     public void park(Object vehicle, DriverType type) throws ParkingLotException {
