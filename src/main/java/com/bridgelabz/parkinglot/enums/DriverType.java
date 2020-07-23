@@ -4,11 +4,22 @@ import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public enum DriverType {
 
-    HANDICAPPED {
+    NORMAL {
+        @Override
+        public ParkingLot getLot(ArrayList<ParkingLot> lots) throws ParkingLotException {
+            return lots.stream()
+                    .sorted(Comparator.comparing(ParkingLot::getNumberOfVehiclesParked))
+                    .filter(lot -> lot.getNumberOfVehiclesParked() != lot.getParkingCapacity())
+                    .findFirst()
+                    .orElseThrow(() -> new ParkingLotException("All lots full....!! Please come back later",
+                            ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL));
+        }
 
+    }, HANDICAPPED {
         @Override
         public ParkingLot getLot(ArrayList<ParkingLot> lots) throws ParkingLotException {
             return lots.stream()

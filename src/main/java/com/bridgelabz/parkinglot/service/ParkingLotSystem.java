@@ -2,6 +2,7 @@ package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.enums.DriverType;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
+import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 
 import java.util.*;
 
@@ -18,15 +19,9 @@ public class ParkingLotSystem {
         return this.numOfLots.size();
     }
 
-    public void park(Object vehicle) throws ParkingLotException {
-        List<ParkingLot> listOfLots = new ArrayList(this.numOfLots);
-        listOfLots.sort(Comparator.comparing(ParkingLot::getNumberOfVehiclesParked));
-        listOfLots.get(0).parkVehicle(vehicle);
-    }
-
-    public void park(Object vehicle, DriverType type) throws ParkingLotException {
-        ParkingLot parkingLot = type.getLot(this.numOfLots);
-        parkingLot.parkVehicle(vehicle);
+    public void park(ParkedVehicleDetails vehicleDetails) throws ParkingLotException {
+        ParkingLot parkingLot = vehicleDetails.getVehicleSize().getLot(getLotsList(), vehicleDetails.getDriverType());
+        parkingLot.parkVehicle(vehicleDetails);
     }
 
     public void unPark(Object vehicle) throws ParkingLotException {
@@ -38,5 +33,9 @@ public class ParkingLotSystem {
         return this.numOfLots.stream().filter(parkingLot -> parkingLot.vehicleAlreadyPresent(vehicle)).findFirst()
                 .orElseThrow(() -> new ParkingLotException
                         ("vehicle not parked in any lot!", ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED));
+    }
+
+    public ArrayList<ParkingLot> getLotsList() {
+        return this.numOfLots;
     }
 }

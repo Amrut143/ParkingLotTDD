@@ -5,15 +5,16 @@ import java.util.Objects;
 
 public class ParkingSlot {
 
-    private Object vehicle;
+    private ParkedVehicleDetails vehicleDetails;
     private LocalDateTime parkingStartTime;
 
-    public ParkingSlot(Object vehicle) {
-        this.vehicle = vehicle;
+    public ParkingSlot(ParkedVehicleDetails vehicleDetails)
+    {
+        this.vehicleDetails = vehicleDetails;
     }
 
-    public ParkingSlot(Object vehicle, LocalDateTime parkingStartTime) {
-        this.vehicle = vehicle;
+    public ParkingSlot(ParkedVehicleDetails vehicleDetails, LocalDateTime parkingStartTime) {
+        this.vehicleDetails = vehicleDetails;
         this.parkingStartTime = parkingStartTime;
     }
 
@@ -21,12 +22,7 @@ public class ParkingSlot {
         return parkingStartTime;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ParkingSlot slot = (ParkingSlot) o;
-        return Objects.equals(vehicle, slot.vehicle) &&
-                Objects.equals(parkingStartTime, slot.parkingStartTime);
+    public Object getVehicle() {
+        return this.vehicleDetails.getVehicle();
     }
 }
