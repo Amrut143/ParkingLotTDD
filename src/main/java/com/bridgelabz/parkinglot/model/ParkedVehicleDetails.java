@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglot.model;
 
 import com.bridgelabz.parkinglot.enums.DriverType;
+import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 
 import java.util.Objects;
@@ -10,6 +11,7 @@ public class ParkedVehicleDetails {
     private Object vehicle;
     private VehicleSize vehicleSize;
     private DriverType driverType;
+    private VehicleColor vehicleColor;
 
     public ParkedVehicleDetails(Object vehicle) {
         this.vehicle = vehicle;
@@ -21,10 +23,16 @@ public class ParkedVehicleDetails {
     public DriverType getDriverType() {
         return driverType;
     }
-    public ParkedVehicleDetails(Object vehicle, DriverType driverType, VehicleSize vehicleSize) {
+
+    public VehicleColor getVehicleColor() {
+        return this.vehicleColor;
+    }
+
+    public ParkedVehicleDetails(Object vehicle, DriverType driverType, VehicleSize vehicleSize, VehicleColor vehicleColor) {
         this.driverType = driverType;
         this.vehicleSize = vehicleSize;
         this.vehicle = vehicle;
+        this.vehicleColor = vehicleColor;
     }
 
     public Object getVehicle() {

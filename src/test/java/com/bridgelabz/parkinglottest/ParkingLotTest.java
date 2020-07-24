@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglottest;
 
 import com.bridgelabz.parkinglot.enums.DriverType;
+import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
@@ -26,6 +27,7 @@ public class ParkingLotTest {
     Object secondVehicle;
     Object thirdVehicle;
     Object fourthVehicle;
+    Object fifthVehicle;
     private ParkingLot firstLot;
     private ParkingLot secondLot;
     private ParkingLotSystem parkingSystem;
@@ -35,23 +37,26 @@ public class ParkingLotTest {
     private ParkedVehicleDetails secondVehicleDetails;
     private ParkedVehicleDetails thirdVehicleDetails;
     private ParkedVehicleDetails fourthVehicleDetails;
+    private ParkedVehicleDetails fifthVehicleDetails;
 
 
     @Before
     public void setUp() {
-        parkingLot = new ParkingLot(2);
+        parkingLot = new ParkingLot(4);
         parkingTime = new ParkingTime();
-        this.firstLot = new ParkingLot(2);
-        this.secondLot = new ParkingLot(2);
+        this.firstLot = new ParkingLot(4);
+        this.secondLot = new ParkingLot(4);
         this.parkingSystem = new ParkingLotSystem(firstLot, secondLot);
         this.firstVehicle = new Object();
         this.secondVehicle = new Object();
         this.thirdVehicle = new Object();
         this.fourthVehicle = new Object();
-        this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL);
-        this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE);
-        this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL);
-        this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE);
+        this.fifthVehicle = new Object();
+        this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL, VehicleColor.WHITE);
+        this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE, VehicleColor.WHITE);
+        this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL, VehicleColor.OTHER);
+        this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE, VehicleColor.OTHER);
+        this.fifthVehicleDetails = new ParkedVehicleDetails(fifthVehicle, DriverType.NORMAL, VehicleSize.SMALL, VehicleColor.OTHER);
     }
 
     @Test
@@ -105,6 +110,8 @@ public class ParkingLotTest {
             parkingLot.parkVehicle(firstVehicleDetails);
             parkingLot.parkVehicle(secondVehicleDetails);
             parkingLot.parkVehicle(thirdVehicleDetails);
+            parkingLot.parkVehicle(fourthVehicleDetails);
+            parkingLot.parkVehicle(fifthVehicleDetails);
         } catch (ParkingLotException e) {
             Assert.assertEquals(ParkingLotException.ExceptionType.PARKING_CAPACITY_FULL, e.type);
             e.printStackTrace();
@@ -117,6 +124,8 @@ public class ParkingLotTest {
             parkingLot.parkVehicle(firstVehicleDetails);
             parkingLot.parkVehicle(secondVehicleDetails);
             parkingLot.parkVehicle(thirdVehicleDetails);
+            parkingLot.parkVehicle(fourthVehicleDetails);
+            parkingLot.parkVehicle(fifthVehicleDetails);
         } catch (ParkingLotException e) {
             Assert.assertTrue(ParkingLotObserver.OWNER.isParkingFull);
         }
@@ -128,6 +137,8 @@ public class ParkingLotTest {
             parkingLot.parkVehicle(firstVehicleDetails);
             parkingLot.parkVehicle(secondVehicleDetails);
             parkingLot.parkVehicle(thirdVehicleDetails);
+            parkingLot.parkVehicle(fourthVehicleDetails);
+            parkingLot.parkVehicle(fifthVehicleDetails);
         } catch (ParkingLotException e) {
             Assert.assertTrue(ParkingLotObserver.AIRPORT_SECURITY.isParkingFull);
         }
@@ -138,6 +149,8 @@ public class ParkingLotTest {
         try {
             parkingLot.parkVehicle(firstVehicleDetails);
             parkingLot.parkVehicle(secondVehicleDetails);
+            parkingLot.parkVehicle(thirdVehicleDetails);
+            parkingLot.parkVehicle(fourthVehicleDetails);
             parkingLot.unParkVehicle(secondVehicle);
         } catch (ParkingLotException e) {
             Assert.assertTrue(ParkingLotObserver.OWNER.isParkingFull);
@@ -147,13 +160,13 @@ public class ParkingLotTest {
     @Test
     public void givenARequestToViewAllAvailableSlots_WhenFound_ShouldReturnAllAvailableSlots() {
         int availableSlots = this.parkingLot.getAvailableSlots().size();
-        Assert.assertEquals(2, availableSlots);
+        Assert.assertEquals(4, availableSlots);
     }
 
     @Test
-    public void givenAVehicleToPark_InAnEmptyOccupiedList_ShouldReturnSize1() {
-        parkingLot.slotAllotment.parkUpdate(1);
-        Assert.assertEquals(1, parkingLot.getAvailableSlots().size());
+    public void givenAVehicleToPark_WhenParkedInParkingLot_ShouldReturnAvailableSlotSize() {
+        parkingLot.slotAllotment.parkUpdate(3);
+        Assert.assertEquals(3, parkingLot.getAvailableSlots().size());
     }
 
     @Test
@@ -210,8 +223,8 @@ public class ParkingLotTest {
 
     @Test
     public void givenAParkingLot_ShouldGetAddedToTheParkingLotsManagedByTheSystem() {
-        ParkingLot parkingLot3 = new ParkingLot(5);
-        parkingSystem.addParking(parkingLot3);
+        ParkingLot thirdParkingLot = new ParkingLot(5);
+        parkingSystem.addParking(thirdParkingLot);
         int numberOfParkingLots = parkingSystem.getNumberOfParkingLots();
         Assert.assertEquals(3, numberOfParkingLots);
     }
@@ -285,4 +298,23 @@ public class ParkingLotTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenARequestToGetVehicleColour_ShouldReturnVehicleColor() {
+        VehicleColor vehicleColor = firstVehicleDetails.getVehicleColor();
+        Assert.assertEquals(VehicleColor.WHITE, vehicleColor);
+    }
+
+    @Test
+    public void givenAQueryToGetSlotsOfAllWhiteVehicles_WhenFound_ShouldReturnListOfWhitVehicleWithSlotNumber() {
+        try {
+        parkingSystem.park(firstVehicleDetails);
+        parkingSystem.park(secondVehicleDetails);
+        parkingSystem.park(fourthVehicleDetails);
+        ArrayList<List<Integer>> slotNumberListOfVehiclesByColor = parkingSystem.getSlotNumberListOfVehiclesByColor(VehicleColor.WHITE);
+            Assert.assertEquals(2, slotNumberListOfVehiclesByColor.size());
+        } catch (ParkingLotException e) {
+        }
+    }
+
 }

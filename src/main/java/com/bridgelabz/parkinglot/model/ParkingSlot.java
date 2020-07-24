@@ -1,5 +1,7 @@
 package com.bridgelabz.parkinglot.model;
 
+import com.bridgelabz.parkinglot.enums.VehicleColor;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -24,5 +26,9 @@ public class ParkingSlot {
 
     public Object getVehicle() {
         return this.vehicleDetails.getVehicle();
+    }
+
+    public VehicleColor getVehicleColor() {
+        return this.vehicleDetails.getVehicleColor();
     }
 }

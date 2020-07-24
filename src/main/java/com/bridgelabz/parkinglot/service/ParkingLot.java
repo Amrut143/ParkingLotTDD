@@ -1,5 +1,6 @@
 package com.bridgelabz.parkinglot.service;
 
+import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.ParkingSlot;
@@ -108,5 +109,13 @@ public class ParkingLot {
 
     public int getNumberOfVehiclesParked() {
         return this.numberOfVehicles;
+    }
+
+    public List<Integer> getSlotNumberListOfVehiclesByColor(VehicleColor vehicleColor) {
+        List<Integer> slotsList = new ArrayList<>();
+        IntStream.range(0, this.parkingSlots.size())
+                .filter(index ->this.parkingSlots.get(index) != null && this.parkingSlots.get(index).getVehicleColor().equals(vehicleColor))
+                .forEach(index -> slotsList.add(index));
+        return slotsList;
     }
 }
