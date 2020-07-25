@@ -8,34 +8,36 @@ import java.util.Objects;
 
 public class ParkedVehicleDetails {
 
-    private Object vehicle;
+    private Vehicle vehicle;
     private VehicleSize vehicleSize;
     private DriverType driverType;
-    private VehicleColor vehicleColor;
+    private String attendantName;
 
-    public ParkedVehicleDetails(Object vehicle) {
+    public ParkedVehicleDetails(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
 
     public VehicleSize getVehicleSize() {
+
         return vehicleSize;
     }
+
     public DriverType getDriverType() {
         return driverType;
     }
 
     public VehicleColor getVehicleColor() {
-        return this.vehicleColor;
+        return this.vehicle.getVehicleColor();
     }
 
-    public ParkedVehicleDetails(Object vehicle, DriverType driverType, VehicleSize vehicleSize, VehicleColor vehicleColor) {
+    public ParkedVehicleDetails(Vehicle vehicle, DriverType driverType, VehicleSize vehicleSize) {
         this.driverType = driverType;
         this.vehicleSize = vehicleSize;
         this.vehicle = vehicle;
-        this.vehicleColor = vehicleColor;
     }
 
-    public Object getVehicle() {
+    public Vehicle getVehicle() {
+
         return vehicle;
     }
 

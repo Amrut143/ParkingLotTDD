@@ -3,6 +3,7 @@ package com.bridgelabz.parkinglot.service;
 import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
+import com.bridgelabz.parkinglot.model.Vehicle;
 
 import java.util.*;
 
@@ -24,12 +25,12 @@ public class ParkingLotSystem {
         parkingLot.parkVehicle(vehicleDetails);
     }
 
-    public void unPark(Object vehicle) throws ParkingLotException {
+    public void unPark(Vehicle vehicle) throws ParkingLotException {
         ParkingLot parkingLotOfThisVehicle = this.getParkingLotInWhichThisVehicleIsParked(vehicle);
         parkingLotOfThisVehicle.unParkVehicle(vehicle);
     }
 
-    public ParkingLot getParkingLotInWhichThisVehicleIsParked(Object vehicle) throws ParkingLotException {
+    public ParkingLot getParkingLotInWhichThisVehicleIsParked(Vehicle vehicle) throws ParkingLotException {
         return this.numOfLots.stream().filter(parkingLot -> parkingLot.vehicleAlreadyPresent(vehicle)).findFirst()
                 .orElseThrow(() -> new ParkingLotException
                         ("vehicle not parked in any lot!", ParkingLotException.ExceptionType.NO_SUCH_CAR_PARKED));
@@ -41,7 +42,15 @@ public class ParkingLotSystem {
 
     public ArrayList<List<Integer>> getSlotNumberListOfVehiclesByColor(VehicleColor vehicleColor) {
         ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
-        this.numOfLots.stream().forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByColor(vehicleColor)));
+        this.numOfLots.stream().
+                forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByColor(vehicleColor)));
+        return listOfSlots;
+    }
+
+    public ArrayList<List<Integer>> getSlotNumberListOfVehiclesByMakeAndColor(String vehicleMake, VehicleColor vehicleColor) {
+        ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
+        this.numOfLots.stream().
+                forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByMakeAndColor(vehicleMake, vehicleColor)));
         return listOfSlots;
     }
 }

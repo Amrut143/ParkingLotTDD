@@ -4,6 +4,7 @@ import com.bridgelabz.parkinglot.enums.DriverType;
 import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
+import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.service.ParkingLot;
@@ -23,11 +24,11 @@ import static org.mockito.Mockito.when;
 public class ParkingLotTest {
 
     ParkingLot parkingLot;
-    Object firstVehicle;
-    Object secondVehicle;
-    Object thirdVehicle;
-    Object fourthVehicle;
-    Object fifthVehicle;
+    Vehicle firstVehicle;
+    Vehicle secondVehicle;
+    Vehicle thirdVehicle;
+    Vehicle fourthVehicle;
+    Vehicle fifthVehicle;
     private ParkingLot firstLot;
     private ParkingLot secondLot;
     private ParkingLotSystem parkingSystem;
@@ -47,16 +48,16 @@ public class ParkingLotTest {
         this.firstLot = new ParkingLot(4);
         this.secondLot = new ParkingLot(4);
         this.parkingSystem = new ParkingLotSystem(firstLot, secondLot);
-        this.firstVehicle = new Object();
-        this.secondVehicle = new Object();
-        this.thirdVehicle = new Object();
-        this.fourthVehicle = new Object();
-        this.fifthVehicle = new Object();
-        this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL, VehicleColor.WHITE);
-        this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE, VehicleColor.WHITE);
-        this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL, VehicleColor.OTHER);
-        this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE, VehicleColor.OTHER);
-        this.fifthVehicleDetails = new ParkedVehicleDetails(fifthVehicle, DriverType.NORMAL, VehicleSize.SMALL, VehicleColor.OTHER);
+        this.firstVehicle = new Vehicle("OD-14-A-100","BMW", VehicleColor.WHITE);
+        this.secondVehicle = new Vehicle("OD-14-P-101","TOYOTA", VehicleColor.BLUE);
+        this.thirdVehicle = new Vehicle("OD-14-D-102","TOYOTA", VehicleColor.BLUE);
+        this.fourthVehicle = new Vehicle("OD-14-G-103","BMW", VehicleColor.WHITE);
+        this.fifthVehicle = new Vehicle("OD-14-F-104","BMW", VehicleColor.OTHER);
+        this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL);
+        this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE);
+        this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL);
+        this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE);
+        this.fifthVehicleDetails = new ParkedVehicleDetails(fifthVehicle, DriverType.NORMAL, VehicleSize.SMALL);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class ParkingLotTest {
     public void givenAVehicle_WhenUnParked_ShouldReturnTrue() {
         try {
             parkingLot.parkVehicle(firstVehicleDetails);
-            parkingLot.unParkVehicle(firstVehicleDetails);
+            parkingLot.unParkVehicle(firstVehicle);
             int isVehicleParked = parkingLot.findSlotOfThisVehicle(firstVehicle);
             Assert.assertEquals(-1, isVehicleParked);
         } catch (ParkingLotException e) {
@@ -310,11 +311,28 @@ public class ParkingLotTest {
         try {
         parkingSystem.park(firstVehicleDetails);
         parkingSystem.park(secondVehicleDetails);
+        parkingSystem.park(thirdVehicleDetails);
         parkingSystem.park(fourthVehicleDetails);
-        ArrayList<List<Integer>> slotNumberListOfVehiclesByColor = parkingSystem.getSlotNumberListOfVehiclesByColor(VehicleColor.WHITE);
+        ArrayList<List<Integer>> slotNumberListOfVehiclesByColor =
+                parkingSystem.getSlotNumberListOfVehiclesByColor(VehicleColor.WHITE);
             Assert.assertEquals(2, slotNumberListOfVehiclesByColor.size());
         } catch (ParkingLotException e) {
+            e.printStackTrace();
         }
     }
 
+    @Test
+    public void givenARequestToGetSlotsOfAllBlueToyota_WhenFound_ShouldReturnListOfSimilarVehiclesSlotNumber() {
+        try {
+            parkingSystem.park(firstVehicleDetails);
+            parkingSystem.park(secondVehicleDetails);
+            parkingSystem.park(thirdVehicleDetails);
+            parkingSystem.park(fourthVehicleDetails);
+            ArrayList<List<Integer>> slotNumberListOfVehiclesByMakeAndColor =
+                    parkingSystem.getSlotNumberListOfVehiclesByMakeAndColor("TOYOTA", VehicleColor.BLUE);
+            Assert.assertEquals(2, slotNumberListOfVehiclesByMakeAndColor.size());
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }

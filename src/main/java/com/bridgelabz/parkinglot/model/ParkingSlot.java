@@ -10,8 +10,7 @@ public class ParkingSlot {
     private ParkedVehicleDetails vehicleDetails;
     private LocalDateTime parkingStartTime;
 
-    public ParkingSlot(ParkedVehicleDetails vehicleDetails)
-    {
+    public ParkingSlot(ParkedVehicleDetails vehicleDetails) {
         this.vehicleDetails = vehicleDetails;
     }
 
@@ -24,8 +23,12 @@ public class ParkingSlot {
         return parkingStartTime;
     }
 
-    public Object getVehicle() {
+    public Vehicle getVehicle() {
         return this.vehicleDetails.getVehicle();
+    }
+
+    public String getVehicleMake() {
+        return this.vehicleDetails.getVehicle().getMake();
     }
 
     public VehicleColor getVehicleColor() {

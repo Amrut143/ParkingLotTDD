@@ -4,6 +4,7 @@ import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.ParkingSlot;
+import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.utility.ParkingTime;
 import com.bridgelabz.parkinglot.utility.SlotAllotment;
 
@@ -42,7 +43,7 @@ public class ParkingLot {
         return parkingLotCapacity;
     }
 
-    public LocalDateTime getVehicleTimingDetails(Object vehicle) {
+    public LocalDateTime getVehicleTimingDetails(Vehicle vehicle) {
         ParkingSlot parkingSlot = new ParkingSlot(new ParkedVehicleDetails(vehicle));
         ParkingSlot time = this.parkingSlots.get(this.parkingSlots.indexOf(parkingSlot));
         return time.getParkingStartTime();
@@ -54,14 +55,14 @@ public class ParkingLot {
     }
 
     public void parkVehicleAtSpecifiedSlot(int slotNumber, ParkedVehicleDetails vehicleDetails) throws ParkingLotException {
-        if (this.vehicleAlreadyPresent(vehicleDetails)) {
+        if (this.vehicleAlreadyPresent(vehicleDetails.getVehicle())) {
             throw new ParkingLotException("No such car present in parking lot!",
                     ParkingLotException.ExceptionType.CAR_ALREADY_PARKED);
         }
         this.parkVehicleAtSlot(slotNumber, vehicleDetails);
     }
 
-    public boolean vehicleAlreadyPresent(Object vehicle) {
+    public boolean vehicleAlreadyPresent(Vehicle vehicle) {
         int vehiclePresent = this.findSlotOfThisVehicle(vehicle);
         if (vehiclePresent == -1) {
             return false;
@@ -89,7 +90,7 @@ public class ParkingLot {
      * @param vehicle
      * @return
      */
-    public void unParkVehicle(Object vehicle) throws ParkingLotException {
+    public void unParkVehicle(Vehicle vehicle) throws ParkingLotException {
         int vehiclePresent = this.findSlotOfThisVehicle(vehicle);
         if (vehiclePresent == -1) {
             throw new ParkingLotException("No such car present in parking lot!",
@@ -100,9 +101,11 @@ public class ParkingLot {
         this.numberOfVehicles--;
     }
 
-    public int findSlotOfThisVehicle(Object vehicle) {
+    public int findSlotOfThisVehicle(Vehicle vehicle) {
         return IntStream.range(0, this.parkingSlots.size())
-                .filter(index -> this.parkingSlots.get(index) != null && vehicle.equals(this.parkingSlots.get(index).getVehicle()))
+                .filter(index ->
+                        this.parkingSlots.get(index) != null &&
+                                vehicle.equals(this.parkingSlots.get(index).getVehicle()))
                 .findFirst()
                 .orElse(-1);
     }
@@ -114,8 +117,21 @@ public class ParkingLot {
     public List<Integer> getSlotNumberListOfVehiclesByColor(VehicleColor vehicleColor) {
         List<Integer> slotsList = new ArrayList<>();
         IntStream.range(0, this.parkingSlots.size())
-                .filter(index ->this.parkingSlots.get(index) != null && this.parkingSlots.get(index).getVehicleColor().equals(vehicleColor))
-                .forEach(index -> slotsList.add(index));
+                .filter(index ->
+                        this.parkingSlots.get(index) != null &&
+                                this.parkingSlots.get(index).getVehicleColor().equals(vehicleColor))
+                .forEach(slotsList::add);
+        return slotsList;
+    }
+
+    public List<Integer> getSlotNumberListOfVehiclesByMakeAndColor(String make, VehicleColor color) {
+        List<Integer> slotsList = new ArrayList<>();
+        IntStream.range(0, this.parkingSlots.size())
+                .filter(index ->
+                        this.parkingSlots.get(index) != null &&
+                                this.parkingSlots.get(index).getVehicleMake().equals(make) &&
+                                this.parkingSlots.get(index).getVehicleColor().equals(color))
+                .forEach(slotsList::add);
         return slotsList;
     }
 }
