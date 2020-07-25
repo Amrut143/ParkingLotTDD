@@ -351,4 +351,17 @@ public class ParkingLotTest {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void givenARequestToGetSlotsOfAllVehicleParkedBefore30Min_WhenFound_ShouldReturnListOfSimilarVehiclesSlotNumber() {
+        try {
+            parkingSystem.park(firstVehicleDetails);
+            parkingSystem.park(secondVehicleDetails);
+            ArrayList<List<Integer>> slotNumberListOfVehiclesByTime =
+                    parkingSystem.getVehiclesWhichIsParkedFrom30Min(30);
+            Assert.assertEquals(2, slotNumberListOfVehiclesByTime.size());
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
 }

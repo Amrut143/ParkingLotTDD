@@ -61,4 +61,11 @@ public class ParkingLotSystem {
                 forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByMake(vehicleMake)));
         return listOfSlots;
     }
+
+    public ArrayList<List<Integer>> getVehiclesWhichIsParkedFrom30Min(int minute) {
+        ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
+        this.numOfLots.stream().
+                forEach(parkingLot -> listOfSlots.add(parkingLot.getVehiclesWhichIsParkedFrom30Min(minute)));
+        return listOfSlots;
+    }
 }

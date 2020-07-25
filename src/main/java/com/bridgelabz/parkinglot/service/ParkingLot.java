@@ -12,6 +12,7 @@ import com.bridgelabz.parkinglot.utility.SlotAllotment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLot {
@@ -142,6 +143,17 @@ public class ParkingLot {
                 .filter(index ->
                         this.parkingSlots.get(index) != null &&
                                 this.parkingSlots.get(index).getVehicleMake().equals(make))
+                .forEach(slotsList::add);
+        return slotsList;
+    }
+
+    public List<Integer> getVehiclesWhichIsParkedFrom30Min(int minute) {
+        List<Integer> slotsList = new ArrayList();
+        IntStream.range(0, this.parkingSlots.size())
+                .filter(parkingSlot ->
+                        this.parkingSlots.get(parkingSlot) != null &&
+                                this.parkingSlots.get(parkingSlot).getParkingStartTime().getMinute() -
+                                        this.parkingTime.getCurrentTime().getMinute() <= minute)
                 .forEach(slotsList::add);
         return slotsList;
     }
