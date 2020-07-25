@@ -53,11 +53,11 @@ public class ParkingLotTest {
         this.thirdVehicle = new Vehicle("OD-14-D-102","TOYOTA", VehicleColor.BLUE);
         this.fourthVehicle = new Vehicle("OD-14-G-103","BMW", VehicleColor.WHITE);
         this.fifthVehicle = new Vehicle("OD-14-F-104","BMW", VehicleColor.OTHER);
-        this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL);
-        this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE);
-        this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL);
-        this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE);
-        this.fifthVehicleDetails = new ParkedVehicleDetails(fifthVehicle, DriverType.NORMAL, VehicleSize.SMALL);
+        this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL, "Amrut");
+        this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE, "Deepak");
+        this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL, "Asish");
+        this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE, "Sanjeeb");
+        this.fifthVehicleDetails = new ParkedVehicleDetails(fifthVehicle, DriverType.NORMAL, VehicleSize.SMALL, "AV");
     }
 
     @Test

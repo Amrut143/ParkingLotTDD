@@ -30,10 +30,15 @@ public class ParkedVehicleDetails {
         return this.vehicle.getVehicleColor();
     }
 
-    public ParkedVehicleDetails(Vehicle vehicle, DriverType driverType, VehicleSize vehicleSize) {
+    public String getAttendantName() {
+        return this.attendantName;
+    }
+
+    public ParkedVehicleDetails(Vehicle vehicle, DriverType driverType, VehicleSize vehicleSize, String attendantName) {
         this.driverType = driverType;
         this.vehicleSize = vehicleSize;
         this.vehicle = vehicle;
+        this.attendantName = attendantName;
     }
 
     public Vehicle getVehicle() {

@@ -9,12 +9,14 @@ public class ParkingSlot {
 
     private ParkedVehicleDetails vehicleDetails;
     private LocalDateTime parkingStartTime;
+    private int slotNumber;
 
     public ParkingSlot(ParkedVehicleDetails vehicleDetails) {
         this.vehicleDetails = vehicleDetails;
     }
 
-    public ParkingSlot(ParkedVehicleDetails vehicleDetails, LocalDateTime parkingStartTime) {
+    public ParkingSlot(int slot, ParkedVehicleDetails vehicleDetails, LocalDateTime parkingStartTime) {
+        this.slotNumber = slot;
         this.vehicleDetails = vehicleDetails;
         this.parkingStartTime = parkingStartTime;
     }
@@ -33,5 +35,13 @@ public class ParkingSlot {
 
     public VehicleColor getVehicleColor() {
         return this.vehicleDetails.getVehicleColor();
+    }
+
+    public int getSlotNumber() {
+        return this.slotNumber;
+    }
+
+    public ParkedVehicleDetails getDetails() {
+        return this.vehicleDetails;
     }
 }

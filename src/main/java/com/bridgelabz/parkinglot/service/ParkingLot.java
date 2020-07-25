@@ -80,7 +80,7 @@ public class ParkingLot {
     }
 
     private void parkVehicleAtSlot(int slotNumber, ParkedVehicleDetails vehicleDetails) {
-        ParkingSlot parkingSlot = new ParkingSlot(vehicleDetails, this.parkingTime.getCurrentTime());
+        ParkingSlot parkingSlot = new ParkingSlot(slotNumber, vehicleDetails, this.parkingTime.getCurrentTime());
         this.parkingSlots.set(slotNumber - 1, parkingSlot);
         this.slotAllotment.parkUpdate(slotNumber);
         this.numberOfVehicles++;
@@ -125,7 +125,7 @@ public class ParkingLot {
     }
 
     public List<Integer> getSlotNumberListOfVehiclesByMakeAndColor(String make, VehicleColor color) {
-        List<Integer> slotsList = new ArrayList<>();
+        List<Integer> slotsList = new ArrayList();
         IntStream.range(0, this.parkingSlots.size())
                 .filter(index ->
                         this.parkingSlots.get(index) != null &&

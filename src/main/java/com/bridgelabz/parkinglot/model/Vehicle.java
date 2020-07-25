@@ -23,6 +23,11 @@ public class Vehicle {
     public VehicleColor getVehicleColor() {
         return vehicleColor;
     }
+
+    public String getNumberPlate() {
+        return this.plateNum;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
