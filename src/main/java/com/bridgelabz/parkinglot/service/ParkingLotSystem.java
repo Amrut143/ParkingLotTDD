@@ -1,6 +1,7 @@
 package com.bridgelabz.parkinglot.service;
 
 import com.bridgelabz.parkinglot.enums.VehicleColor;
+import com.bridgelabz.parkinglot.enums.VehicleMake;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.Vehicle;
@@ -47,10 +48,17 @@ public class ParkingLotSystem {
         return listOfSlots;
     }
 
-    public ArrayList<List<Integer>> getSlotNumberListOfVehiclesByMakeAndColor(String vehicleMake, VehicleColor vehicleColor) {
+    public ArrayList<List<Integer>> getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake vehicleMake, VehicleColor vehicleColor) {
         ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
         this.numOfLots.stream().
                 forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByMakeAndColor(vehicleMake, vehicleColor)));
+        return listOfSlots;
+    }
+
+    public ArrayList<List<Integer>> getSlotNumberListOfVehiclesByMake(VehicleMake vehicleMake) {
+        ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
+        this.numOfLots.stream().
+                forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByMake(vehicleMake)));
         return listOfSlots;
     }
 }

@@ -2,6 +2,7 @@ package com.bridgelabz.parkinglottest;
 
 import com.bridgelabz.parkinglot.enums.DriverType;
 import com.bridgelabz.parkinglot.enums.VehicleColor;
+import com.bridgelabz.parkinglot.enums.VehicleMake;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.Vehicle;
@@ -48,11 +49,11 @@ public class ParkingLotTest {
         this.firstLot = new ParkingLot(4);
         this.secondLot = new ParkingLot(4);
         this.parkingSystem = new ParkingLotSystem(firstLot, secondLot);
-        this.firstVehicle = new Vehicle("OD-14-A-100","BMW", VehicleColor.WHITE);
-        this.secondVehicle = new Vehicle("OD-14-P-101","TOYOTA", VehicleColor.BLUE);
-        this.thirdVehicle = new Vehicle("OD-14-D-102","TOYOTA", VehicleColor.BLUE);
-        this.fourthVehicle = new Vehicle("OD-14-G-103","BMW", VehicleColor.WHITE);
-        this.fifthVehicle = new Vehicle("OD-14-F-104","BMW", VehicleColor.OTHER);
+        this.firstVehicle = new Vehicle("OD-14-A-100",VehicleMake.BMW, VehicleColor.WHITE);
+        this.secondVehicle = new Vehicle("OD-14-P-101",VehicleMake.TOYOTA, VehicleColor.BLUE);
+        this.thirdVehicle = new Vehicle("OD-14-D-102",VehicleMake.TOYOTA, VehicleColor.BLUE);
+        this.fourthVehicle = new Vehicle("OD-14-G-103",VehicleMake.BMW, VehicleColor.WHITE);
+        this.fifthVehicle = new Vehicle("OD-14-F-104",VehicleMake.OTHERS, VehicleColor.OTHER);
         this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL, "Amrut");
         this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE, "Deepak");
         this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL, "Asish");
@@ -329,8 +330,23 @@ public class ParkingLotTest {
             parkingSystem.park(thirdVehicleDetails);
             parkingSystem.park(fourthVehicleDetails);
             ArrayList<List<Integer>> slotNumberListOfVehiclesByMakeAndColor =
-                    parkingSystem.getSlotNumberListOfVehiclesByMakeAndColor("TOYOTA", VehicleColor.BLUE);
+                    parkingSystem.getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake.TOYOTA, VehicleColor.BLUE);
             Assert.assertEquals(2, slotNumberListOfVehiclesByMakeAndColor.size());
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenARequestToGetSlotsOfAllBMWVehicle_WhenFound_ShouldReturnListOfSimilarVehiclesSlotNumber() {
+        try {
+            parkingSystem.park(firstVehicleDetails);
+            parkingSystem.park(secondVehicleDetails);
+            parkingSystem.park(thirdVehicleDetails);
+            parkingSystem.park(fourthVehicleDetails);
+            ArrayList<List<Integer>> slotNumberListOfVehiclesByMake =
+                    parkingSystem.getSlotNumberListOfVehiclesByMake(VehicleMake.BMW);
+            Assert.assertEquals(2, slotNumberListOfVehiclesByMake.size());
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
