@@ -10,7 +10,7 @@ public enum DriverType {
 
     NORMAL {
         @Override
-        public ParkingLot getLot(ArrayList<ParkingLot> lots) throws ParkingLotException {
+        public ParkingLot getParkingLot(ArrayList<ParkingLot> lots) throws ParkingLotException {
             return lots.stream()
                     .sorted(Comparator.comparing(ParkingLot::getNumberOfVehiclesParked))
                     .filter(lot -> lot.getNumberOfVehiclesParked() != lot.getParkingCapacity())
@@ -21,7 +21,7 @@ public enum DriverType {
 
     }, HANDICAPPED {
         @Override
-        public ParkingLot getLot(ArrayList<ParkingLot> lots) throws ParkingLotException {
+        public ParkingLot getParkingLot(ArrayList<ParkingLot> lots) throws ParkingLotException {
             return lots.stream()
                     .filter(lot -> lot.getNumberOfVehiclesParked() != lot.getParkingCapacity())
                     .findFirst()
@@ -30,5 +30,5 @@ public enum DriverType {
         }
     };
 
-    public abstract ParkingLot getLot(ArrayList<ParkingLot> lots) throws ParkingLotException;
+    public abstract ParkingLot getParkingLot(ArrayList<ParkingLot> lots) throws ParkingLotException;
 }

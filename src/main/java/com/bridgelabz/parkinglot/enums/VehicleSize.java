@@ -10,12 +10,12 @@ public enum VehicleSize {
 
     SMALL {
         @Override
-        public ParkingLot getLot(ArrayList<ParkingLot> lotsList, DriverType driverType) throws ParkingLotException {
-            return driverType.getLot(lotsList);
+        public ParkingLot getParkingLot(ArrayList<ParkingLot> lotsList, DriverType driverType) throws ParkingLotException {
+            return driverType.getParkingLot(lotsList);
         }
     }, LARGE {
         @Override
-        public ParkingLot getLot(ArrayList<ParkingLot> lotsList, DriverType driverType) throws ParkingLotException {
+        public ParkingLot getParkingLot(ArrayList<ParkingLot> lotsList, DriverType driverType) throws ParkingLotException {
             return lotsList.stream()
                     .sorted(Comparator.comparing(lot -> (lot.getParkingCapacity() - lot.getNumberOfVehiclesParked()),
                             Comparator.reverseOrder()))
@@ -26,5 +26,5 @@ public enum VehicleSize {
         }
     };
 
-    public abstract ParkingLot getLot(ArrayList<ParkingLot> lotsList, DriverType driverType) throws ParkingLotException;
+    public abstract ParkingLot getParkingLot(ArrayList<ParkingLot> lotsList, DriverType driverType) throws ParkingLotException;
 }
