@@ -5,6 +5,7 @@ import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleMake;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
+import com.bridgelabz.parkinglot.model.ParkingSlot;
 import com.bridgelabz.parkinglot.model.Vehicle;
 import com.bridgelabz.parkinglot.observer.ParkingLotObserver;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
@@ -341,11 +342,11 @@ public class ParkingLotTest {
             parkingSystem.park(fourthVehicleDetails);
             parkingSystem.park(fifthVehicleDetails);
             parkingSystem.park(sixthVehicleDetails);
-            List<Integer> firstLotOutputList = new ArrayList<>();
-            firstLotOutputList.add(2);
-            List<Integer> secondLotOutputList = new ArrayList<>();
-            secondLotOutputList.add(0);
-            ArrayList<List<Integer>> slotNumberListOfVehiclesByMakeAndColor =
+            List<String> firstLotOutputList = new ArrayList<>();
+            firstLotOutputList.add("OD-14-F-104"+" "+"AV");
+            List<String> secondLotOutputList = new ArrayList();
+            secondLotOutputList.add("OD-14-P-101"+" "+"Deepak");
+            ArrayList<List<String>> slotNumberListOfVehiclesByMakeAndColor =
                     parkingSystem.getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake.TOYOTA, VehicleColor.BLUE);
             Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesByMakeAndColor.get(0));
             Assert.assertEquals(secondLotOutputList, slotNumberListOfVehiclesByMakeAndColor.get(1));
@@ -411,6 +412,32 @@ public class ParkingLotTest {
             ArrayList<List<Integer>> slotNumberListOfVehiclesBySizeAndDriverType =
                     parkingSystem.getSlotNumberListOfVehiclesBySizeAndDriverType(DriverType.HANDICAPPED, VehicleSize.SMALL);
             Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesBySizeAndDriverType.get(0));
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenARequestToGetSlotsOfAllParkedVehicles_WhenFound_ShouldReturnListOfVehiclesSlotNumber() {
+        try {
+            parkingSystem.park(firstVehicleDetails);
+            parkingSystem.park(secondVehicleDetails);
+            parkingSystem.park(thirdVehicleDetails);
+            parkingSystem.park(fourthVehicleDetails);
+            parkingSystem.park(fifthVehicleDetails);
+            parkingSystem.park(sixthVehicleDetails);
+            List<Integer> firstLotOutputList = new ArrayList();
+            firstLotOutputList.add(1);
+            firstLotOutputList.add(2);
+            firstLotOutputList.add(3);
+            firstLotOutputList.add(4);
+            List<Integer> secondLotOutputList = new ArrayList();
+            secondLotOutputList.add(1);
+            secondLotOutputList.add(2);
+            ArrayList<List<Integer>> slotNumberListOfAllParkedVehicles =
+                    parkingSystem.getAllVehiclesParkedInParkingLot();
+            Assert.assertEquals(firstLotOutputList, slotNumberListOfAllParkedVehicles.get(0));
+            Assert.assertEquals(secondLotOutputList, slotNumberListOfAllParkedVehicles.get(1));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }

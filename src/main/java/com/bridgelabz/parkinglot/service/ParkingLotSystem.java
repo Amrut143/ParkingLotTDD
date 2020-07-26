@@ -6,6 +6,7 @@ import com.bridgelabz.parkinglot.enums.VehicleMake;
 import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
+import com.bridgelabz.parkinglot.model.ParkingSlot;
 import com.bridgelabz.parkinglot.model.Vehicle;
 
 import java.util.*;
@@ -50,8 +51,8 @@ public class ParkingLotSystem {
         return listOfSlots;
     }
 
-    public ArrayList<List<Integer>> getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake vehicleMake, VehicleColor vehicleColor) {
-        ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
+    public ArrayList<List<String>> getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake vehicleMake, VehicleColor vehicleColor) {
+        ArrayList<List<String>> listOfSlots = new ArrayList<>();
         this.numOfLots.stream().
                 forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesByMakeAndColor(vehicleMake, vehicleColor)));
         return listOfSlots;
@@ -75,6 +76,13 @@ public class ParkingLotSystem {
         ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
         this.numOfLots.stream().
                 forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesBySizeAndDriverType(driverType, vehicleSize)));
+        return listOfSlots;
+    }
+
+    public ArrayList<List<Integer>> getAllVehiclesParkedInParkingLot() {
+        ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
+        this.numOfLots.stream().
+                forEach(parkingLot -> listOfSlots.add(parkingLot.getAllVehiclesParkedInParkingLot()));
         return listOfSlots;
     }
 }

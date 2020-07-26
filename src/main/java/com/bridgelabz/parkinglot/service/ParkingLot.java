@@ -14,7 +14,6 @@ import com.bridgelabz.parkinglot.utility.SlotAllotment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class ParkingLot {
@@ -128,14 +127,15 @@ public class ParkingLot {
         return slotsList;
     }
 
-    public List<Integer> getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake make, VehicleColor color) {
-        List<Integer> slotsList = new ArrayList();
+    public List<String> getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake make, VehicleColor color) {
+        List<String> slotsList = new ArrayList();
         IntStream.range(0, this.parkingSlots.size())
                 .filter(index ->
                         this.parkingSlots.get(index) != null &&
                                 this.parkingSlots.get(index).getVehicleMake().equals(make) &&
                                 this.parkingSlots.get(index).getVehicleColor().equals(color))
-                .forEach(slotsList::add);
+                .forEach(parkingSlot -> slotsList.add(parkingSlots.get(parkingSlot).getVehicle().getNumberPlate()+
+                        " "+parkingSlots.get(parkingSlot).getDetails().getAttendantName()));
         return slotsList;
     }
 
@@ -168,6 +168,14 @@ public class ParkingLot {
                                 this.parkingSlots.get(index).getDetails().getVehicleSize().equals(vehicleSize) &&
                                 this.parkingSlots.get(index).getDetails().getDriverType().equals(driverType))
                 .forEach(slotsList::add);
+        return slotsList;
+    }
+
+    public List<Integer> getAllVehiclesParkedInParkingLot() {
+        List<Integer> slotsList = new ArrayList();
+        IntStream.range(0, this.parkingSlots.size())
+                .filter(parkingSlot -> this.parkingSlots.get(parkingSlot) != null)
+                .forEach(parkingSlot -> slotsList.add(parkingSlots.get(parkingSlot).getSlotNumber()));
         return slotsList;
     }
 }

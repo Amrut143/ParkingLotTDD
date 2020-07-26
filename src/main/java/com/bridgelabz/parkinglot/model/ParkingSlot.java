@@ -4,7 +4,6 @@ import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleMake;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class ParkingSlot {
 
