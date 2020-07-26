@@ -30,6 +30,7 @@ public class ParkingLotTest {
     Vehicle thirdVehicle;
     Vehicle fourthVehicle;
     Vehicle fifthVehicle;
+    Vehicle sixthVehicle;
     private ParkingLot firstLot;
     private ParkingLot secondLot;
     private ParkingLotSystem parkingSystem;
@@ -40,6 +41,7 @@ public class ParkingLotTest {
     private ParkedVehicleDetails thirdVehicleDetails;
     private ParkedVehicleDetails fourthVehicleDetails;
     private ParkedVehicleDetails fifthVehicleDetails;
+    private ParkedVehicleDetails sixthVehicleDetails;
 
 
     @Before
@@ -49,16 +51,18 @@ public class ParkingLotTest {
         this.firstLot = new ParkingLot(4);
         this.secondLot = new ParkingLot(4);
         this.parkingSystem = new ParkingLotSystem(firstLot, secondLot);
-        this.firstVehicle = new Vehicle("OD-14-A-100",VehicleMake.BMW, VehicleColor.WHITE);
-        this.secondVehicle = new Vehicle("OD-14-P-101",VehicleMake.TOYOTA, VehicleColor.BLUE);
-        this.thirdVehicle = new Vehicle("OD-14-D-102",VehicleMake.TOYOTA, VehicleColor.BLUE);
-        this.fourthVehicle = new Vehicle("OD-14-G-103",VehicleMake.BMW, VehicleColor.WHITE);
-        this.fifthVehicle = new Vehicle("OD-14-F-104",VehicleMake.OTHERS, VehicleColor.OTHER);
+        this.firstVehicle = new Vehicle("OD-14-A-100", VehicleMake.BMW, VehicleColor.WHITE);
+        this.secondVehicle = new Vehicle("OD-14-P-101", VehicleMake.TOYOTA, VehicleColor.BLUE);
+        this.thirdVehicle = new Vehicle("OD-14-D-102", VehicleMake.TOYOTA, VehicleColor.WHITE);
+        this.fourthVehicle = new Vehicle("OD-14-G-103", VehicleMake.BMW, VehicleColor.WHITE);
+        this.fifthVehicle = new Vehicle("OD-14-F-104", VehicleMake.TOYOTA, VehicleColor.BLUE);
+        this.sixthVehicle = new Vehicle("OD-14-K-105", VehicleMake.OTHERS, VehicleColor.OTHER);
         this.firstVehicleDetails = new ParkedVehicleDetails(firstVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL, "Amrut");
         this.secondVehicleDetails = new ParkedVehicleDetails(secondVehicle, DriverType.NORMAL, VehicleSize.LARGE, "Deepak");
         this.thirdVehicleDetails = new ParkedVehicleDetails(thirdVehicle, DriverType.NORMAL, VehicleSize.SMALL, "Asish");
         this.fourthVehicleDetails = new ParkedVehicleDetails(fourthVehicle, DriverType.HANDICAPPED, VehicleSize.LARGE, "Sanjeeb");
         this.fifthVehicleDetails = new ParkedVehicleDetails(fifthVehicle, DriverType.NORMAL, VehicleSize.SMALL, "AV");
+        this.sixthVehicleDetails = new ParkedVehicleDetails(sixthVehicle, DriverType.HANDICAPPED, VehicleSize.SMALL, "DG");
     }
 
     @Test
@@ -314,9 +318,15 @@ public class ParkingLotTest {
         parkingSystem.park(secondVehicleDetails);
         parkingSystem.park(thirdVehicleDetails);
         parkingSystem.park(fourthVehicleDetails);
+        List<Integer> firstLotOutputList = new ArrayList<>();
+        firstLotOutputList.add(0);
+        firstLotOutputList.add(1);
+        List<Integer> secondLotOutputList = new ArrayList<>();
+        secondLotOutputList.add(1);
         ArrayList<List<Integer>> slotNumberListOfVehiclesByColor =
                 parkingSystem.getSlotNumberListOfVehiclesByColor(VehicleColor.WHITE);
-            Assert.assertEquals(2, slotNumberListOfVehiclesByColor.size());
+            Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesByColor.get(0));
+            Assert.assertEquals(secondLotOutputList, slotNumberListOfVehiclesByColor.get(1));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -329,9 +339,16 @@ public class ParkingLotTest {
             parkingSystem.park(secondVehicleDetails);
             parkingSystem.park(thirdVehicleDetails);
             parkingSystem.park(fourthVehicleDetails);
+            parkingSystem.park(fifthVehicleDetails);
+            parkingSystem.park(sixthVehicleDetails);
+            List<Integer> firstLotOutputList = new ArrayList<>();
+            firstLotOutputList.add(2);
+            List<Integer> secondLotOutputList = new ArrayList<>();
+            secondLotOutputList.add(0);
             ArrayList<List<Integer>> slotNumberListOfVehiclesByMakeAndColor =
                     parkingSystem.getSlotNumberListOfVehiclesByMakeAndColor(VehicleMake.TOYOTA, VehicleColor.BLUE);
-            Assert.assertEquals(2, slotNumberListOfVehiclesByMakeAndColor.size());
+            Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesByMakeAndColor.get(0));
+            Assert.assertEquals(secondLotOutputList, slotNumberListOfVehiclesByMakeAndColor.get(1));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -344,9 +361,16 @@ public class ParkingLotTest {
             parkingSystem.park(secondVehicleDetails);
             parkingSystem.park(thirdVehicleDetails);
             parkingSystem.park(fourthVehicleDetails);
+            parkingSystem.park(fifthVehicleDetails);
+            parkingSystem.park(sixthVehicleDetails);
+            List<Integer> firstLotOutputList = new ArrayList<>();
+            firstLotOutputList.add(0);
+            List<Integer> secondLotOutputList = new ArrayList<>();
+            secondLotOutputList.add(1);
             ArrayList<List<Integer>> slotNumberListOfVehiclesByMake =
                     parkingSystem.getSlotNumberListOfVehiclesByMake(VehicleMake.BMW);
-            Assert.assertEquals(2, slotNumberListOfVehiclesByMake.size());
+            Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesByMake.get(0));
+            Assert.assertEquals(secondLotOutputList, slotNumberListOfVehiclesByMake.get(1));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }
@@ -357,9 +381,36 @@ public class ParkingLotTest {
         try {
             parkingSystem.park(firstVehicleDetails);
             parkingSystem.park(secondVehicleDetails);
+            parkingSystem.park(thirdVehicleDetails);
+            List<Integer> firstLotOutputList = new ArrayList<>();
+            firstLotOutputList.add(0);
+            firstLotOutputList.add(1);
+            List<Integer> secondLotOutputList = new ArrayList<>();
+            secondLotOutputList.add(0);
             ArrayList<List<Integer>> slotNumberListOfVehiclesByTime =
                     parkingSystem.getVehiclesWhichIsParkedFrom30Min(30);
-            Assert.assertEquals(2, slotNumberListOfVehiclesByTime.size());
+            Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesByTime.get(0));
+            Assert.assertEquals(secondLotOutputList, slotNumberListOfVehiclesByTime.get(1));
+        } catch (ParkingLotException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void givenARequestToGetSlotsOfAllSmallHandicapped_WhenFound_ShouldReturnListOfSimilarVehiclesSlotNumber() {
+        try {
+            parkingSystem.park(firstVehicleDetails);
+            parkingSystem.park(secondVehicleDetails);
+            parkingSystem.park(thirdVehicleDetails);
+            parkingSystem.park(fourthVehicleDetails);
+            parkingSystem.park(fifthVehicleDetails);
+            parkingSystem.park(sixthVehicleDetails);
+            List<Integer> firstLotOutputList = new ArrayList<>();
+            firstLotOutputList.add(0);
+            firstLotOutputList.add(3);
+            ArrayList<List<Integer>> slotNumberListOfVehiclesBySizeAndDriverType =
+                    parkingSystem.getSlotNumberListOfVehiclesBySizeAndDriverType(DriverType.HANDICAPPED, VehicleSize.SMALL);
+            Assert.assertEquals(firstLotOutputList, slotNumberListOfVehiclesBySizeAndDriverType.get(0));
         } catch (ParkingLotException e) {
             e.printStackTrace();
         }

@@ -18,7 +18,6 @@ public class ParkedVehicleDetails {
     }
 
     public VehicleSize getVehicleSize() {
-
         return vehicleSize;
     }
 
@@ -42,7 +41,6 @@ public class ParkedVehicleDetails {
     }
 
     public Vehicle getVehicle() {
-
         return vehicle;
     }
 

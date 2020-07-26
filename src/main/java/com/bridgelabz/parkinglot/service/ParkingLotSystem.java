@@ -1,7 +1,9 @@
 package com.bridgelabz.parkinglot.service;
 
+import com.bridgelabz.parkinglot.enums.DriverType;
 import com.bridgelabz.parkinglot.enums.VehicleColor;
 import com.bridgelabz.parkinglot.enums.VehicleMake;
+import com.bridgelabz.parkinglot.enums.VehicleSize;
 import com.bridgelabz.parkinglot.exception.ParkingLotException;
 import com.bridgelabz.parkinglot.model.ParkedVehicleDetails;
 import com.bridgelabz.parkinglot.model.Vehicle;
@@ -66,6 +68,13 @@ public class ParkingLotSystem {
         ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
         this.numOfLots.stream().
                 forEach(parkingLot -> listOfSlots.add(parkingLot.getVehiclesWhichIsParkedFrom30Min(minute)));
+        return listOfSlots;
+    }
+
+    public ArrayList<List<Integer>> getSlotNumberListOfVehiclesBySizeAndDriverType(DriverType driverType, VehicleSize vehicleSize) {
+        ArrayList<List<Integer>> listOfSlots = new ArrayList<>();
+        this.numOfLots.stream().
+                forEach(parkingLot -> listOfSlots.add(parkingLot.getSlotNumberListOfVehiclesBySizeAndDriverType(driverType, vehicleSize)));
         return listOfSlots;
     }
 }
