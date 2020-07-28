@@ -14,12 +14,15 @@ import java.util.*;
 public class ParkingLotSystem {
 
     private final ArrayList<ParkingLot> numOfLots;
+
     public ParkingLotSystem(ParkingLot... parkingLot) {
         this.numOfLots = new ArrayList<>(Arrays.asList(parkingLot));
     }
+
     public void addParking(ParkingLot parkingLot) {
         this.numOfLots.add(parkingLot);
     }
+
     public int getNumberOfParkingLots() {
         return this.numOfLots.size();
     }
@@ -30,8 +33,8 @@ public class ParkingLotSystem {
     }
 
     public void unPark(Vehicle vehicle) throws ParkingLotException {
-        ParkingLot parkingLotOfThisVehicle = this.getParkingLotInWhichThisVehicleIsParked(vehicle);
-        parkingLotOfThisVehicle.unParkVehicle(vehicle);
+        ParkingLot parkingLot = this.getParkingLotInWhichThisVehicleIsParked(vehicle);
+        parkingLot.unParkVehicle(vehicle);
     }
 
     public ParkingLot getParkingLotInWhichThisVehicleIsParked(Vehicle vehicle) throws ParkingLotException {

@@ -8,17 +8,17 @@ import java.util.Objects;
 public class Vehicle {
 
     private final String plateNum;
-    private final VehicleMake make;
+    private final VehicleMake vehicleMake;
     private final VehicleColor vehicleColor;
 
     public Vehicle(String plateNum, VehicleMake make, VehicleColor vehicleColor) {
         this.plateNum = plateNum;
-        this.make = make;
+        this.vehicleMake = make;
         this.vehicleColor = vehicleColor;
     }
 
     public VehicleMake getMake() {
-        return make;
+        return vehicleMake;
     }
 
     public VehicleColor getVehicleColor() {
@@ -35,7 +35,7 @@ public class Vehicle {
         if (o == null || getClass() != o.getClass()) return false;
         Vehicle vehicle = (Vehicle) o;
         return Objects.equals(plateNum, vehicle.plateNum) &&
-                Objects.equals(make, vehicle.make) &&
+                Objects.equals(vehicleMake, vehicle.vehicleMake) &&
                 vehicleColor == vehicle.vehicleColor;
     }
 

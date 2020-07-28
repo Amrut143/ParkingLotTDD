@@ -134,8 +134,8 @@ public class ParkingLot {
                         this.parkingSlots.get(index) != null &&
                                 this.parkingSlots.get(index).getVehicleMake().equals(make) &&
                                 this.parkingSlots.get(index).getVehicleColor().equals(color))
-                .forEach(parkingSlot -> slotsList.add(parkingSlots.get(parkingSlot).getVehicle().getNumberPlate()+
-                        " "+parkingSlots.get(parkingSlot).getDetails().getAttendantName()));
+                .forEach(parkingSlot -> slotsList.add(parkingSlots.get(parkingSlot).getVehicle().getNumberPlate() +
+                        " " + parkingSlots.get(parkingSlot).getDetails().getAttendantName()));
         return slotsList;
     }
 
